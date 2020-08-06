@@ -21,24 +21,42 @@ class Board extends React.Component {
   }
 
   render() {
+    let numSquares = 0;
+    let board = [];
+
+    for (let row = 0; row < 3; row++) {
+      let currentRow = [];
+      for (let col = 0; col < 3; col++) {
+        currentRow.push(
+          <span key={numSquares}>{this.renderSquare(numSquares)}</span>
+        );
+        numSquares++;
+      }
+      board.push(
+        <div key={row} className="board-row">
+          {currentRow}
+        </div>
+      );
+    }
+
+    return <div>{board}</div>;
+  }
+}
+
+class Toggle extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentlyAscending: true,
+    };
+  }
+
+  render() {
     return (
-      <div>
-        <div className="board-row">
-          {this.renderSquare(0)}
-          {this.renderSquare(1)}
-          {this.renderSquare(2)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(3)}
-          {this.renderSquare(4)}
-          {this.renderSquare(5)}
-        </div>
-        <div className="board-row">
-          {this.renderSquare(6)}
-          {this.renderSquare(7)}
-          {this.renderSquare(8)}
-        </div>
-      </div>
+      <button onClick={this.props.onClick}>
+        Currently in Ascending List:{' '}
+        {this.state.currentlyAscending ? 'true' : 'false'}
+      </button>
     );
   }
 }
@@ -114,6 +132,10 @@ class Game extends React.Component {
     return coordinate;
   }
 
+  toggleClicked() {
+    alert('Clicked!');
+  }
+
   render() {
     const history = this.getHistory();
     const currentBoard = this.getCurrentBoard();
@@ -133,7 +155,12 @@ class Game extends React.Component {
         : 'Go to game start';
       return (
         <li key={move}>
-          <button onClick={() => this.jumpTo(move)}>{desc}</button>
+          <button
+            className={`${this.state.stepNumber === move ? 'currentStep' : ''}`}
+            onClick={() => this.jumpTo(move)}
+          >
+            {desc}
+          </button>
         </li>
       );
     });
@@ -147,6 +174,9 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
+          <div>
+            <Toggle onClick={this.toggleClicked()} />
+          </div>
           <div>{status}</div>
           <ol>{moves}</ol>
         </div>

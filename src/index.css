@@ -64,3 +64,7 @@ ul {
 .game-info {
   margin-left: 20px;
 }
+
+.currentStep {
+  font-weight: bold;
+}
