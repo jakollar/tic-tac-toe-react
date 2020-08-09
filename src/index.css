@@ -68,3 +68,8 @@ ul {
 .currentStep {
   font-weight: bold;
 }
+
+.winner {
+  background: green;
+  color: white;
+}
