@@ -82,6 +82,7 @@ class Game extends React.Component {
       stepNumber: 0,
       xIsNext: true,
       currentlyAscending: true,
+      isDraw: false,
     };
   }
 
@@ -94,6 +95,10 @@ class Game extends React.Component {
     const squares = currentBoard.squares.slice();
     if (calculateWinner(squares) || squares[i]) {
       return;
+    }
+
+    if (history.length === 9) {
+      this.setDraw();
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
@@ -110,6 +115,7 @@ class Game extends React.Component {
 
   jumpTo(step) {
     this.setState({
+      isDraw: false,
       stepNumber: step,
       xIsNext: step % 2 === 0,
     });
@@ -118,6 +124,12 @@ class Game extends React.Component {
   startGame() {
     this.setState({
       started: true,
+    });
+  }
+
+  setDraw() {
+    this.setState({
+      isDraw: true,
     });
   }
 
@@ -183,6 +195,10 @@ class Game extends React.Component {
 
     if (!isCurrentlyAscending) {
       moves.reverse();
+    }
+
+    if (this.state.isDraw) {
+      status = 'DRAW!!!';
     }
 
     return (
